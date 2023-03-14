@@ -16,8 +16,8 @@ import uvicorn
 from pydantic import BaseSettings
 from typing import Any
 
-from .eventos import EventoConfirmacionGDS, ConfirmacionRevertida, ReservaConfirmada
-from .comandos import ComandoConfirmarReserva, ComandoRevertirConfirmacion, ConfirmarReservaPayload, RevertirConfirmacionPayload
+from .eventos import EventoConfirmacionGDS, ConfirmacionRevertida, OrdenConfirmada
+from .comandos import ComandoConfirmarOrden, ComandoRevertirConfirmacion, ConfirmarOrdenPayload, RevertirConfirmacionPayload
 from .consumidores import suscribirse_a_topico
 from .despachadores import Despachador
 
@@ -27,7 +27,7 @@ class Config(BaseSettings):
     APP_VERSION: str = "1"
 
 settings = Config()
-app_configs: dict[str, Any] = {"title": "Pagos AeroAlpes"}
+app_configs: dict[str, Any] = {"title": "Pagos eda"}
 
 app = FastAPI(**app_configs)
 tasks = list()
@@ -36,7 +36,7 @@ tasks = list()
 async def app_startup():
     global tasks
     task1 = asyncio.ensure_future(suscribirse_a_topico("evento-gds", "sub-gds", EventoConfirmacionGDS))
-    task2 = asyncio.ensure_future(suscribirse_a_topico("comando-confirmar-reserva", "sub-com-gds-confirmacion", ComandoConfirmarReserva))
+    task2 = asyncio.ensure_future(suscribirse_a_topico("comando-confirmar-orden", "sub-com-gds-confirmacion", ComandoConfirmarOrden))
     task3 = asyncio.ensure_future(suscribirse_a_topico("comando-revertir-confirmacion", "sub-com-gds-revertir-confirmacion", ComandoRevertirConfirmacion))
     tasks.append(task1)
     tasks.append(task2)
@@ -48,12 +48,12 @@ def shutdown_event():
     for task in tasks:
         task.cancel()
 
-@app.get("/prueba-reserva-confirmada", include_in_schema=False)
-async def prueba_reserva_confirmada() -> dict[str, str]:
-    payload = ReservaConfirmada(
+@app.get("/prueba-orden-confirmada", include_in_schema=False)
+async def prueba_orden_confirmada() -> dict[str, str]:
+    payload = OrdenConfirmada(
         id = "1232321321",
         id_correlacion = "389822434",
-        reserva_id = "6463454",
+        orden_id = "6463454",
         fecha_confirmacion = utils.time_millis()
     )
 
@@ -72,7 +72,7 @@ async def prueba_confirmacion_revertida() -> dict[str, str]:
     payload = ConfirmacionRevertida(
         id = "1232321321",
         id_correlacion = "389822434",
-        reserva_id = "6463454",
+        orden_id = "6463454",
         fecha_actualizacion = utils.time_millis()
     )
 
@@ -86,21 +86,21 @@ async def prueba_confirmacion_revertida() -> dict[str, str]:
     despachador.publicar_mensaje(evento, "evento-gds")
     return {"status": "ok"}
     
-@app.get("/prueba-confirmar-reserva", include_in_schema=False)
-async def prueba_confirmar_reserva() -> dict[str, str]:
-    payload = ConfirmarReservaPayload(
+@app.get("/prueba-confirmar-orden", include_in_schema=False)
+async def prueba_confirmar_orden() -> dict[str, str]:
+    payload = ConfirmarOrdenPayload(
         id_correlacion = "389822434",
         reserva_id = "6463454",
     )
 
-    comando = ComandoConfirmarReserva(
+    comando = ComandoConfirmarOrden(
         time=utils.time_millis(),
         ingestion=utils.time_millis(),
-        datacontenttype=ConfirmarReservaPayload.__name__,
+        datacontenttype=ConfirmarOrdenPayload.__name__,
         data = payload
     )
     despachador = Despachador()
-    despachador.publicar_mensaje(comando, "comando-confirmar-reserva")
+    despachador.publicar_mensaje(comando, "comando-confirmar-orden")
     return {"status": "ok"}
 
 @app.get("/prueba-revertir-confirmacion", include_in_schema=False)
@@ -108,7 +108,7 @@ async def prueba_revertir_confirmacion() -> dict[str, str]:
     payload = RevertirConfirmacionPayload(
         id = "1232321321",
         id_correlacion = "389822434",
-        reserva_id = "6463454",
+        orden_id = "6463454",
     )
 
     comando = ComandoRevertirConfirmacion(

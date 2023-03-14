@@ -16,8 +16,8 @@ import uvicorn
 from pydantic import BaseSettings
 from typing import Any
 
-from .eventos import EventoPago, PagoRevertido, ReservaPagada
-from .comandos import ComandoPagarReserva, ComandoRevertirPago, RevertirPagoPayload, PagarReservaPayload
+from .eventos import EventoPago, PagoRevertido, OrdenPagada
+from .comandos import ComandoPagarOrden, ComandoRevertirPago, RevertirPagoPayload, PagarOrdenPayload
 from .consumidores import suscribirse_a_topico
 from .despachadores import Despachador
 
@@ -27,7 +27,7 @@ class Config(BaseSettings):
     APP_VERSION: str = "1"
 
 settings = Config()
-app_configs: dict[str, Any] = {"title": "Pagos AeroAlpes"}
+app_configs: dict[str, Any] = {"title": "Pagos eda"}
 
 app = FastAPI(**app_configs)
 tasks = list()
@@ -36,7 +36,7 @@ tasks = list()
 async def app_startup():
     global tasks
     task1 = asyncio.ensure_future(suscribirse_a_topico("evento-pago", "sub-pagos", EventoPago))
-    task2 = asyncio.ensure_future(suscribirse_a_topico("comando-pagar-reserva", "sub-com-pagos-reservar", ComandoPagarReserva))
+    task2 = asyncio.ensure_future(suscribirse_a_topico("comando-pagar-orden", "sub-com-pagos-reservar", ComandoPagarOrden))
     task3 = asyncio.ensure_future(suscribirse_a_topico("comando-revertir-pago", "sub-com-pagos-revertir", ComandoRevertirPago))
     tasks.append(task1)
     tasks.append(task2)
@@ -48,12 +48,12 @@ def shutdown_event():
     for task in tasks:
         task.cancel()
 
-@app.get("/prueba-reserva-pagada", include_in_schema=False)
-async def prueba_reserva_pagada() -> dict[str, str]:
-    payload = ReservaPagada(
+@app.get("/prueba-orden-pagada", include_in_schema=False)
+async def prueba_orden_pagada() -> dict[str, str]:
+    payload = OrdenPagada(
         id = "1232321321",
         id_correlacion = "389822434",
-        reserva_id = "6463454",
+        orden_id = "6463454",
         monto = 23412.12,
         monto_vat = 234.0,
         fecha_creacion = utils.time_millis()
@@ -62,8 +62,8 @@ async def prueba_reserva_pagada() -> dict[str, str]:
     evento = EventoPago(
         time=utils.time_millis(),
         ingestion=utils.time_millis(),
-        datacontenttype=ReservaPagada.__name__,
-        reserva_pagada = payload
+        datacontenttype=OrdenPagada.__name__,
+        orden_pagada = payload
     )
     despachador = Despachador()
     despachador.publicar_mensaje(evento, "evento-pago")
@@ -74,7 +74,7 @@ async def prueba_pago_revertido() -> dict[str, str]:
     payload = PagoRevertido(
         id = "1232321321",
         id_correlacion = "389822434",
-        reserva_id = "6463454",
+        orden_id = "6463454",
         fecha_actualizacion = utils.time_millis()
     )
 
@@ -88,23 +88,23 @@ async def prueba_pago_revertido() -> dict[str, str]:
     despachador.publicar_mensaje(evento, "evento-pago")
     return {"status": "ok"}
     
-@app.get("/prueba-pagar-reserva", include_in_schema=False)
+@app.get("/prueba-pagar-orden", include_in_schema=False)
 async def prueba_pagar_reserva() -> dict[str, str]:
-    payload = PagarReservaPayload(
+    payload = PagarOrdenPayload(
         id_correlacion = "389822434",
-        reserva_id = "6463454",
+        orden_id = "6463454",
         monto = 23412.12,
         monto_vat = 234.0,
     )
 
-    comando = ComandoPagarReserva(
+    comando = ComandoPagarOrden(
         time=utils.time_millis(),
         ingestion=utils.time_millis(),
-        datacontenttype=ReservaPagada.__name__,
+        datacontenttype=OrdenPagada.__name__,
         data = payload
     )
     despachador = Despachador()
-    despachador.publicar_mensaje(comando, "comando-pagar-reserva")
+    despachador.publicar_mensaje(comando, "comando-pagar-orden")
     return {"status": "ok"}
 
 @app.get("/prueba-revertir-pago", include_in_schema=False)
@@ -112,7 +112,7 @@ async def prueba_revertir_pago() -> dict[str, str]:
     payload = RevertirPagoPayload(
         id = "1232321321",
         id_correlacion = "389822434",
-        reserva_id = "6463454",
+        orden_id = "6463454",
     )
 
     comando = ComandoRevertirPago(

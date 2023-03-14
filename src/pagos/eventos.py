@@ -2,10 +2,10 @@ from pulsar.schema import *
 from .utils import time_millis
 import uuid
 
-class ReservaPagada(Record):
+class OrdenPagada(Record):
     id = String(),
     id_correlacion = String(),
-    reserva_id = String()
+    orden_id = String()
     monto = Double()
     monto_vat = Double()
     fecha_creacion = Long()
@@ -13,7 +13,7 @@ class ReservaPagada(Record):
 class PagoRevertido(Record):
     id = String()
     id_correlacion = String()
-    reserva_id = String()
+    orden_id = String()
     fecha_actualizacion = Long()
 
 class EventoPago(Record):
@@ -23,8 +23,8 @@ class EventoPago(Record):
     specversion = String(default="v1")
     type = String(default="EventoPago")
     datacontenttype = String()
-    service_name = String(default="pagos.aeroalpes")
-    reserva_pagada = ReservaPagada
+    service_name = String(default="pagos.eda")
+    orden_pagada = OrdenPagada
     pago_revertido = PagoRevertido
 
     def __init__(self, *args, **kwargs):

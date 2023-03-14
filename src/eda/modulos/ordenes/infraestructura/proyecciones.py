@@ -1,9 +1,9 @@
 from eda.seedwork.infraestructura.proyecciones import Proyeccion, ProyeccionHandler
 from eda.seedwork.infraestructura.proyecciones import ejecutar_proyeccion as proyeccion
 from eda.modulos.ordenes.infraestructura.fabricas import FabricaRepositorio
-from eda.modulos.ordenes.infraestructura.repositorios import RepositorioReservas
-from eda.modulos.ordenes.dominio.entidades import Reserva
-from eda.modulos.ordenes.infraestructura.dto import Reserva as ReservaDTO
+from eda.modulos.ordenes.infraestructura.repositorios import RepositorioOrdenes
+from eda.modulos.ordenes.dominio.entidades import Orden
+from eda.modulos.ordenes.infraestructura.dto import Orden as OrdenDTO
 
 from eda.seedwork.infraestructura.utils import millis_a_datetime
 import datetime
@@ -12,12 +12,12 @@ import traceback
 from abc import ABC, abstractmethod
 from .dto import ReservaAnalitica
 
-class ProyeccionReserva(Proyeccion, ABC):
+class ProyeccionOrden(Proyeccion, ABC):
     @abstractmethod
     def ejecutar(self):
         ...
 
-class ProyeccionReservasTotales(ProyeccionReserva):
+class ProyeccionOrdenesTotales(ProyeccionOrden):
     ADD = 1
     DELETE = 2
     UPDATE = 3
@@ -43,7 +43,7 @@ class ProyeccionReservasTotales(ProyeccionReserva):
         
         db.session.commit()
 
-class ProyeccionReservasLista(ProyeccionReserva):
+class ProyeccionOrdenesLista(ProyeccionOrden):
     def __init__(self, id_reserva, id_cliente, estado, fecha_creacion, fecha_actualizacion):
         self.id_reserva = id
         self.id_cliente = id_cliente
@@ -57,11 +57,11 @@ class ProyeccionReservasLista(ProyeccionReserva):
             return
         
         fabrica_repositorio = FabricaRepositorio()
-        repositorio = fabrica_repositorio.crear_objeto(RepositorioReservas)
+        repositorio = fabrica_repositorio.crear_objeto(RepositorioOrdenes)
         
         # TODO Haga los cambios necesarios para que se consideren los itinerarios, demás entidades y asociaciones
         repositorio.agregar(
-            Reserva(
+            Orden(
                 id=str(self.id_reserva), 
                 id_cliente=str(self.id_cliente), 
                 estado=str(self.estado), 
@@ -73,9 +73,9 @@ class ProyeccionReservasLista(ProyeccionReserva):
         # TODO ¿Tal vez podríamos reutilizar la Unidad de Trabajo?
         db.session.commit()
 
-class ProyeccionReservaHandler(ProyeccionHandler):
+class ProyeccionOrdenHandler(ProyeccionHandler):
     
-    def handle(self, proyeccion: ProyeccionReserva):
+    def handle(self, proyeccion: ProyeccionOrden):
 
         # TODO El evento de creación no viene con todos los datos de itinerarios, esto tal vez pueda ser una extensión
         # Asi mismo estamos dejando la funcionalidad de persistencia en el mismo método de recepción. Piense que componente
@@ -85,15 +85,15 @@ class ProyeccionReservaHandler(ProyeccionHandler):
         proyeccion.ejecutar(db=db)
         
 
-@proyeccion.register(ProyeccionReservasLista)
-@proyeccion.register(ProyeccionReservasTotales)
-def ejecutar_proyeccion_reserva(proyeccion, app=None):
+@proyeccion.register(ProyeccionOrdenesLista)
+@proyeccion.register(ProyeccionOrdenesTotales)
+def ejecutar_proyeccion_orden(proyeccion, app=None):
     if not app:
         logging.error('ERROR: Contexto del app no puede ser nulo')
         return
     try:
         with app.app_context():
-            handler = ProyeccionReservaHandler()
+            handler = ProyeccionOrdenHandler()
             handler.handle(proyeccion)
             
     except:

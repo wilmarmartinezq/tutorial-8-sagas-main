@@ -1,10 +1,10 @@
 from eda.seedwork.infraestructura.vistas import Vista
-from eda.modulos.ordenes.dominio.entidades import Reserva
+from eda.modulos.ordenes.dominio.entidades import Orden
 from eda.config.db import db
-from .dto import Reserva as ReservaDTO
+from .dto import Orden as OrdenDTO
 
-class VistaReserva(Vista):
-    def obtener_por(id=None, estado=None, id_cliente=None, **kwargs) -> [Reserva]:
+class VistaOrden(Vista):
+    def obtener_por(id=None, estado=None, id_cliente=None, **kwargs) -> [Orden]:
         params = dict()
 
         if id:
@@ -17,4 +17,4 @@ class VistaReserva(Vista):
             params['id_cliente'] = str(id_cliente)
             
         # TODO Convierta ReservaDTO a Reserva y valide que la consulta es correcta
-        return db.session.query(ReservaDTO).filter_by(**params)
+        return db.session.query(OrdenDTO).filter_by(**params)
