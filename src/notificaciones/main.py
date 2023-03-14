@@ -28,7 +28,7 @@ class EventoOrdenCreada(EventoIntegracion):
 HOSTNAME = os.getenv('PULSAR_ADDRESS', default="localhost")
 
 client = pulsar.Client(f'pulsar://{HOSTNAME}:6650')
-consumer = client.subscribe('eventos-orden', consumer_type=_pulsar.ConsumerType.Shared, subscription_name='sub-notificacion-eventos-reservas', schema=AvroSchema(EventoReservaCreada))
+consumer = client.subscribe('eventos-orden', consumer_type=_pulsar.ConsumerType.Shared, subscription_name='sub-notificacion-eventos-ordenes', schema=AvroSchema(EventoReservaCreada))
 
 while True:
     msg = consumer.receive()

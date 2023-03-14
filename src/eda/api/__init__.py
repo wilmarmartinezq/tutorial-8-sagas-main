@@ -62,8 +62,8 @@ def create_app(configuracion={}):
         if not app.config.get('TESTING'):
             comenzar_consumidor(app)
         
-        from eda.modulos.sagas.aplicacion.coordinadores.saga_ordenes import CoordinadorReservas
-        CoordinadorReservas()
+        from eda.modulos.sagas.aplicacion.coordinadores.saga_ordenes import CoordinadorOrdenes
+        CoordinadorOrdenes()
 
      # Importa Blueprints
     from . import adquisiciones

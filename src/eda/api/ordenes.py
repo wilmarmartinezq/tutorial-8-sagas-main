@@ -1,11 +1,11 @@
 import eda.seedwork.presentacion.api as api
 import json
-from eda.modulos.ordenes.aplicacion.dto import ReservaDTO
+from eda.modulos.ordenes.aplicacion.dto import OrdenDTO
 from eda.seedwork.dominio.excepciones import ExcepcionDominio
 
 from flask import redirect, render_template, request, session, url_for
 from flask import Response
-from eda.modulos.ordenes.aplicacion.mapeadores import MapeadorReservaDTOJson
+from eda.modulos.ordenes.aplicacion.mapeadores import MapeadorOrdenDTOJson
 from eda.modulos.ordenes.aplicacion.comandos.crear_orden import CrearOrden
 from eda.modulos.ordenes.aplicacion.queries.obtener_orden import ObtenerOrden
 from eda.seedwork.aplicacion.comandos import ejecutar_commando
@@ -20,10 +20,10 @@ def ordenar_usando_comando():
         # no la defecto de SQLAlchemy
         session['uow_metodo'] = 'pulsar'
 
-        reserva_dict = request.json
+        orden_dict = request.json
 
-        map_orden = MapeadorReservaDTOJson()
-        orden_dto = map_orden.externo_a_dto(reserva_dict)
+        map_orden = MapeadorOrdenDTOJson()
+        orden_dto = map_orden.externo_a_dto(orden_dict)
 
         comando = CrearOrden(orden_dto.fecha_creacion, orden_dto.fecha_actualizacion, orden_dto.id)
         
@@ -40,7 +40,7 @@ def ordenar_usando_comando():
 def dar_orden_usando_query(id=None):
     if id:
         query_resultado = ejecutar_query(ObtenerOrden(id))
-        map_orden = MapeadorReservaDTOJson()
+        map_orden = MapeadorOrdenDTOJson()
         
         return map_orden.dto_a_externo(query_resultado.resultado)
     else:

@@ -1,24 +1,24 @@
 from eda.seedwork.aplicacion.queries import Query, QueryHandler, QueryResultado
 from eda.seedwork.aplicacion.queries import ejecutar_query as query
-from eda.modulos.ordenes.infraestructura.repositorios import RepositorioReservas
-from eda.modulos.ordenes.dominio.entidades import Reserva
+from eda.modulos.ordenes.infraestructura.repositorios import RepositorioOrdenes
+from eda.modulos.ordenes.dominio.entidades import Orden
 from dataclasses import dataclass
-from .base import ReservaQueryBaseHandler
-from eda.modulos.ordenes.aplicacion.mapeadores import MapeadorReserva
+from .base import OrdenQueryBaseHandler
+from eda.modulos.ordenes.aplicacion.mapeadores import MapeadorOrden
 import uuid
 
 @dataclass
-class ObtenerReserva(Query):
+class ObtenerOrden(Query):
     id: str
 
-class ObtenerReservaHandler(ReservaQueryBaseHandler):
+class ObtenerOrdenHandler(OrdenQueryBaseHandler):
 
-    def handle(self, query: ObtenerReserva) -> QueryResultado:
-        vista = self.fabrica_vista.crear_objeto(Reserva)
-        reserva =  self.fabrica_vuelos.crear_objeto(vista.obtener_por(id=query.id)[0], MapeadorReserva())
-        return QueryResultado(resultado=reserva)
+    def handle(self, query: ObtenerOrden) -> QueryResultado:
+        vista = self.fabrica_vista.crear_objeto(Orden)
+        orden =  self.fabrica_ordenes.crear_objeto(vista.obtener_por(id=query.id)[0], MapeadorOrden())
+        return QueryResultado(resultado=orden)
 
-@query.register(ObtenerReserva)
-def ejecutar_query_obtener_reserva(query: ObtenerReserva):
-    handler = ObtenerReservaHandler()
+@query.register(ObtenerOrden)
+def ejecutar_query_obtener_orden(query: ObtenerOrden):
+    handler = ObtenerOrdenHandler()
     return handler.handle(query)

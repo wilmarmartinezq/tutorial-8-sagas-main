@@ -15,8 +15,8 @@ Base = db.declarative_base()
 
 
 
-class Reserva(db.Model):
-    __tablename__ = "reservas"
+class Orden(db.Model):
+    __tablename__ = "ordenes"
     id = db.Column(db.String(40), primary_key=True)
     fecha_creacion = db.Column(db.DateTime, nullable=False)
     fecha_actualizacion = db.Column(db.DateTime, nullable=False)

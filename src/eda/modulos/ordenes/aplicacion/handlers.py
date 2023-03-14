@@ -1,4 +1,4 @@
-from eda.modulos.ordenes.dominio.eventos.ordenes import ReservaCreada, ReservaCancelada, ReservaAprobada, ReservaPagada
+from eda.modulos.ordenes.dominio.eventos.ordenes import OrdenCreada, OrdenCancelada, OrdenAprobada, OrdenPagada
 from eda.seedwork.aplicacion.handlers import Handler
 from eda.modulos.ordenes.infraestructura.despachadores import Despachador
 

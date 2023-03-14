@@ -1,9 +1,9 @@
 from eda.seedwork.aplicacion.queries import Query, QueryHandler, ResultadoQuery
 
-class ObtenerTodasReservasPagadas(Query):
+class ObtenerTodasOrdenesPagadas(Query):
     ...
 
-class ObtenerTodasReservasHandler(QueryHandler):
+class ObtenerTodasOrdenesHandler(QueryHandler):
 
     def handle() -> ResultadoQuery:
         ...

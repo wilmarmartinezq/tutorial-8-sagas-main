@@ -1,10 +1,10 @@
 from eda.seedwork.aplicacion.queries import Query, QueryHandler, ResultadoQuery
 import uuid
 
-class ObtenerReservasCanceladas(Query):
+class ObtenerOrdenesCanceladas(Query):
     ...
 
-class ObtenerReservasCanceladasHandler(QueryHandler):
+class ObtenerOrdenesCanceladasHandler(QueryHandler):
 
     def handle() -> ResultadoQuery:
         ...

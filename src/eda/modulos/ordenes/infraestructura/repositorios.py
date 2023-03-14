@@ -18,7 +18,7 @@ from pulsar.schema import *
 
 
 
-class RepositorioReservasSQLAlchemy(RepositorioOrdenes):
+class RepositorioOrdenesSQLAlchemy(RepositorioOrdenes):
 
     def __init__(self):
         self._fabrica_ordenes: FabricaOrdenes = FabricaOrdenes()
