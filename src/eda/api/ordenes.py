@@ -6,7 +6,7 @@ from eda.seedwork.dominio.excepciones import ExcepcionDominio
 from flask import redirect, render_template, request, session, url_for
 from flask import Response
 from eda.modulos.ordenes.aplicacion.mapeadores import MapeadorReservaDTOJson
-from eda.modulos.ordenes.aplicacion.comandos.crear_reserva import CrearReserva
+from eda.modulos.ordenes.aplicacion.comandos.crear_orden import CrearReserva
 from eda.modulos.ordenes.aplicacion.queries.obtener_reserva import ObtenerReserva
 from eda.seedwork.aplicacion.comandos import ejecutar_commando
 from eda.seedwork.aplicacion.queries import ejecutar_query

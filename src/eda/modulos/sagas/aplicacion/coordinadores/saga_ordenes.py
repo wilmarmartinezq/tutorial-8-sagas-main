@@ -5,7 +5,7 @@ from eda.seedwork.dominio.eventos import EventoDominio
 from eda.modulos.sagas.aplicacion.comandos.cliente import RegistrarUsuario, ValidarUsuario
 from eda.modulos.sagas.aplicacion.comandos.pagos import PagarReserva, RevertirPago
 from eda.modulos.sagas.aplicacion.comandos.gds import ConfirmarReserva, RevertirConfirmacion
-from eda.modulos.ordenes.aplicacion.comandos.crear_reserva import CrearReserva
+from eda.modulos.ordenes.aplicacion.comandos.crear_orden import CrearReserva
 from eda.modulos.ordenes.aplicacion.comandos.aprobar_reserva import AprobarReserva
 from eda.modulos.ordenes.aplicacion.comandos.cancelar_reserva import CancelarReserva
 from eda.modulos.ordenes.dominio.eventos.reservas import ReservaCreada, ReservaCancelada, ReservaAprobada, CreacionReservaFallida, AprobacionReservaFallida
