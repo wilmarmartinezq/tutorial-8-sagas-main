@@ -1,28 +1,28 @@
-from eda.modulos.ordenes.dominio.eventos.reservas import ReservaCreada, ReservaCancelada, ReservaAprobada, ReservaPagada
+from eda.modulos.ordenes.dominio.eventos.ordenes import ReservaCreada, ReservaCancelada, ReservaAprobada, ReservaPagada
 from eda.seedwork.aplicacion.handlers import Handler
 from eda.modulos.ordenes.infraestructura.despachadores import Despachador
 
-class HandlerReservaIntegracion(Handler):
+class HandlerOrdenIntegracion(Handler):
 
     @staticmethod
-    def handle_reserva_creada(evento):
+    def handle_orden_creada(evento):
         despachador = Despachador()
-        despachador.publicar_evento(evento, 'eventos-reserva')
+        despachador.publicar_evento(evento, 'eventos-orden')
 
     @staticmethod
-    def handle_reserva_cancelada(evento):
+    def handle_orden_cancelada(evento):
         despachador = Despachador()
-        despachador.publicar_evento(evento, 'eventos-reserva')
+        despachador.publicar_evento(evento, 'eventos-orden')
 
     @staticmethod
-    def handle_reserva_aprobada(evento):
+    def handle_orden_aprobada(evento):
         despachador = Despachador()
-        despachador.publicar_evento(evento, 'eventos-reserva')
+        despachador.publicar_evento(evento, 'eventos-orden')
 
     @staticmethod
-    def handle_reserva_pagada(evento):
+    def handle_orden_pagada(evento):
         despachador = Despachador()
-        despachador.publicar_evento(evento, 'eventos-reserva')
+        despachador.publicar_evento(evento, 'eventos-orden')
 
 
     

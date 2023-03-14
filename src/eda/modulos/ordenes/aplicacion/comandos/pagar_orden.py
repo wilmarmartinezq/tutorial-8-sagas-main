@@ -1,7 +1,7 @@
 from eda.seedwork.aplicacion.comandos import Comando, ComandoHandler
 
-class AprobarReserva(Comando):
+class PagarOrden(Comando):
     ...
 
-class AprobarReservaHandler(ComandoHandler):
+class PagarOrdenHandler(ComandoHandler):
     ...

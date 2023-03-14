@@ -4,11 +4,11 @@ from cliente.modulos.dominio.repositorios import RepositorioUsuarios
 class RepositorioUsuariosSQLAlchemy(RepositorioUsuarios):
 
     def __init__(self):
-        self._fabrica_vuelos: FabricaVuelos = FabricaVuelos()
+        self._fabrica_reservas: FabricaReservas = FabricaReservas()
 
     @property
     def fabrica_vuelos(self):
-        return self._fabrica_vuelos
+        return self._fabrica_reservas
 
     def obtener_por_id(self, id: UUID) -> Reserva:
         reserva_dto = db.session.query(ReservaDTO).filter_by(id=str(id)).one()

@@ -16,13 +16,9 @@ class SegmentoDTO(DTO):
 class OdoDTO(DTO):
     segmentos: list[SegmentoDTO]
 
-@dataclass(frozen=True)
-class ItinerarioDTO(DTO):
-    odos: list[OdoDTO]
 
 @dataclass(frozen=True)
-class ReservaDTO(DTO):
+class OrdenDTO(DTO):
     fecha_creacion: str = field(default_factory=str)
     fecha_actualizacion: str = field(default_factory=str)
     id: str = field(default_factory=str)
-    itinerarios: list[ItinerarioDTO] = field(default_factory=list)

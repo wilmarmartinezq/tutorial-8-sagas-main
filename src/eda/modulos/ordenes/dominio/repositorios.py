@@ -8,10 +8,10 @@ del dominio de vuelos
 from abc import ABC
 from eda.seedwork.dominio.repositorios import Repositorio
 
-class RepositorioReservas(Repositorio, ABC):
+class RepositorioOrdenes(Repositorio, ABC):
     ...
 
-class RepositorioEventosReservas(Repositorio, ABC):
+class RepositorioEventosOrdenes(Repositorio, ABC):
     ...
 
 class RepositorioProveedores(Repositorio, ABC):

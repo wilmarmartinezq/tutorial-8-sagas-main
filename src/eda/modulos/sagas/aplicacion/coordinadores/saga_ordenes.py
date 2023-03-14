@@ -3,25 +3,25 @@ from eda.seedwork.aplicacion.comandos import Comando
 from eda.seedwork.dominio.eventos import EventoDominio
 
 from eda.modulos.sagas.aplicacion.comandos.cliente import RegistrarUsuario, ValidarUsuario
-from eda.modulos.sagas.aplicacion.comandos.pagos import PagarReserva, RevertirPago
-from eda.modulos.sagas.aplicacion.comandos.gds import ConfirmarReserva, RevertirConfirmacion
-from eda.modulos.ordenes.aplicacion.comandos.crear_orden import CrearReserva
-from eda.modulos.ordenes.aplicacion.comandos.aprobar_reserva import AprobarReserva
-from eda.modulos.ordenes.aplicacion.comandos.cancelar_reserva import CancelarReserva
-from eda.modulos.ordenes.dominio.eventos.reservas import ReservaCreada, ReservaCancelada, ReservaAprobada, CreacionReservaFallida, AprobacionReservaFallida
-from eda.modulos.sagas.dominio.eventos.pagos import ReservaPagada, PagoRevertido
-from eda.modulos.sagas.dominio.eventos.gds import ReservaGDSConfirmada, ConfirmacionGDSRevertida, ConfirmacionFallida
+from eda.modulos.sagas.aplicacion.comandos.pagos import PagarOrden, RevertirPago
+from eda.modulos.sagas.aplicacion.comandos.gds import ConfirmarOrden, RevertirConfirmacion
+from eda.modulos.ordenes.aplicacion.comandos.crear_orden import CrearOrden
+from eda.modulos.ordenes.aplicacion.comandos.aprobar_orden import AprobarOrden
+from eda.modulos.ordenes.aplicacion.comandos.cancelar_orden import CancelarOrden
+from eda.modulos.ordenes.dominio.eventos.ordenes import OrdenCreada, OrdenCancelada, OrdenAprobada, CreacionOrdenFallida, AprobacionOrdenFallida
+from eda.modulos.sagas.dominio.eventos.pagos import OrdenPagada, PagoRevertido
+from eda.modulos.sagas.dominio.eventos.gds import OrdenGDSConfirmada, ConfirmacionGDSRevertida, ConfirmacionFallida
 
 
-class CoordinadorReservas(CoordinadorOrquestacion):
+class CoordinadorOrdenes(CoordinadorOrquestacion):
 
     def inicializar_pasos(self):
         self.pasos = [
             Inicio(index=0),
-            Transaccion(index=1, comando=CrearReserva, evento=ReservaCreada, error=CreacionReservaFallida, compensacion=CancelarReserva),
-            Transaccion(index=2, comando=PagarReserva, evento=ReservaPagada, error=PagoFallido, compensacion=RevertirPago),
-            Transaccion(index=3, comando=ConfirmarReserva, evento=ReservaGDSConfirmada, error=ConfirmacionFallida, compensacion=ConfirmacionGDSRevertida),
-            Transaccion(index=4, comando=AprobarReserva, evento=ReservaAprobada, error=AprobacionReservaFallida, compensacion=CancelarReserva),
+            Transaccion(index=1, comando=CrearOrden, evento=OrdenCreada, error=CreacionOrdenFallida, compensacion=CancelarOrden),
+            Transaccion(index=2, comando=PagarOrden, evento=OrdenPagada, error=PagoFallido, compensacion=RevertirPago),
+            Transaccion(index=3, comando=ConfirmarOrden, evento=OrdenGDSConfirmada, error=ConfirmacionFallida, compensacion=ConfirmacionGDSRevertida),
+            Transaccion(index=4, comando=AprobarOrden, evento=OrdenAprobada, error=AprobacionOrdenFallida, compensacion=CancelarOrden),
             Fin(index=5)
         ]
 
@@ -46,7 +46,7 @@ class CoordinadorReservas(CoordinadorOrquestacion):
 # TODO Agregue un Listener/Handler para que se puedan redireccionar eventos de dominio
 def oir_mensaje(mensaje):
     if isinstance(mensaje, EventoDominio):
-        coordinador = CoordinadorReservas()
+        coordinador = CoordinadorOrdenes()
         coordinador.procesar_evento(mensaje)
     else:
         raise NotImplementedError("El mensaje no es evento de Dominio")

@@ -28,7 +28,7 @@ class ComandoRegistrarUsuario(ComandoIntegracion):
     specversion = String(default="v1")
     type = String(default="RegistrarUsuario")
     datacontenttype = String()
-    service_name = String(default="cliente.aeroalpes")
+    service_name = String(default="cliente.eda")
     data = RegistrarUsuario
 
     def __init__(self, *args, **kwargs):
@@ -41,7 +41,7 @@ class ComandoValidarUsuario(ComandoIntegracion):
     specversion = String(default="v1")
     type = String(default="ValidarUsuario")
     datacontenttype = String()
-    service_name = String(default="cliente.aeroalpes")
+    service_name = String(default="cliente.eda")
     data = ValidarUsuario
 
     def __init__(self, *args, **kwargs):
@@ -54,7 +54,7 @@ class ComandoDesactivarUsuario(ComandoIntegracion):
     specversion = String(default="v1")
     type = String(default="DesactivarUsuario")
     datacontenttype = String()
-    service_name = String(default="cliente.aeroalpes")
+    service_name = String(default="cliente.eda")
     data = DesactivarUsuario
 
     def __init__(self, *args, **kwargs):

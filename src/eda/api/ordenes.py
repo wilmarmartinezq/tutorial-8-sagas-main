@@ -6,15 +6,15 @@ from eda.seedwork.dominio.excepciones import ExcepcionDominio
 from flask import redirect, render_template, request, session, url_for
 from flask import Response
 from eda.modulos.ordenes.aplicacion.mapeadores import MapeadorReservaDTOJson
-from eda.modulos.ordenes.aplicacion.comandos.crear_orden import CrearReserva
-from eda.modulos.ordenes.aplicacion.queries.obtener_reserva import ObtenerReserva
+from eda.modulos.ordenes.aplicacion.comandos.crear_orden import CrearOrden
+from eda.modulos.ordenes.aplicacion.queries.obtener_orden import ObtenerOrden
 from eda.seedwork.aplicacion.comandos import ejecutar_commando
 from eda.seedwork.aplicacion.queries import ejecutar_query
 
-bp = api.crear_blueprint('vuelos', '/vuelos')
+bp = api.crear_blueprint('ordenes', '/ordenes')
 
-@bp.route('/reserva', methods=('POST',))
-def reservar_usando_comando():
+@bp.route('/orden', methods=('POST',))
+def ordenar_usando_comando():
     try:
         # NOTE Asignamos el valor 'pulsar' para usar la Unidad de trabajo de Pulsar y 
         # no la defecto de SQLAlchemy
@@ -22,10 +22,10 @@ def reservar_usando_comando():
 
         reserva_dict = request.json
 
-        map_reserva = MapeadorReservaDTOJson()
-        reserva_dto = map_reserva.externo_a_dto(reserva_dict)
+        map_orden = MapeadorReservaDTOJson()
+        orden_dto = map_orden.externo_a_dto(reserva_dict)
 
-        comando = CrearReserva(reserva_dto.fecha_creacion, reserva_dto.fecha_actualizacion, reserva_dto.id, reserva_dto.itinerarios)
+        comando = CrearOrden(orden_dto.fecha_creacion, orden_dto.fecha_actualizacion, orden_dto.id)
         
         # TODO Reemplaze es todo código sincrono y use el broker de eventos para propagar este comando de forma asíncrona
         # Revise la clase Despachador de la capa de infraestructura
@@ -35,13 +35,13 @@ def reservar_usando_comando():
     except ExcepcionDominio as e:
         return Response(json.dumps(dict(error=str(e))), status=400, mimetype='application/json')
 
-@bp.route('/reserva', methods=('GET',))
-@bp.route('/reserva/<id>', methods=('GET',))
-def dar_reserva_usando_query(id=None):
+@bp.route('/orden', methods=('GET',))
+@bp.route('/orden/<id>', methods=('GET',))
+def dar_orden_usando_query(id=None):
     if id:
-        query_resultado = ejecutar_query(ObtenerReserva(id))
-        map_reserva = MapeadorReservaDTOJson()
+        query_resultado = ejecutar_query(ObtenerOrden(id))
+        map_orden = MapeadorReservaDTOJson()
         
-        return map_reserva.dto_a_externo(query_resultado.resultado)
+        return map_orden.dto_a_externo(query_resultado.resultado)
     else:
         return [{'message': 'GET!'}]

@@ -33,7 +33,7 @@ class EventoUsuario(EventoIntegracion):
     specversion = String(default="v1")
     type = String(default="EventoUsuario")
     datacontenttype = String()
-    service_name = String(default="cliente.aeroalpes")
+    service_name = String(default="cliente.eda")
     usuario_registrado = UsuarioRegistrado
     usuario_validado = UsuarioValidado
     usuario_desactivado = UsuarioDesactivado

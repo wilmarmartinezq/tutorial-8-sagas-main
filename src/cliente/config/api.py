@@ -6,4 +6,4 @@ class Config(BaseSettings):
 
 settings = Config()
 
-app_configs: dict[str, Any] = {"title": "Cliente AeroAlpes"}
+app_configs: dict[str, Any] = {"title": "Cliente eda"}

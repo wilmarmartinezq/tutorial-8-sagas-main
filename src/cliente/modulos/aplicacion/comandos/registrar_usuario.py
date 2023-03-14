@@ -40,6 +40,6 @@ class RegistrarUsuarioHandler(ComandoHandler):
 
 
 @comando.register(ComandoRegistrarUsuario)
-def ejecutar_comando_crear_reserva(comando: ComandoRegistrarUsuario):
+def ejecutar_comando_crear_orden(comando: ComandoRegistrarUsuario):
     handler = RegistrarUsuarioHandler()
     handler.handle(comando)
