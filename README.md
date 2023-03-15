@@ -333,6 +333,3 @@ fuser -k <puerto>/tcp
 ```bash
 docker-compose --profile <pulsar|aeroalpes|ui|notificacion> up
 ```
-Ordenes - Vuelos
-Adquisiciones - Hoteles
-Empaquetado – Vehiculos
