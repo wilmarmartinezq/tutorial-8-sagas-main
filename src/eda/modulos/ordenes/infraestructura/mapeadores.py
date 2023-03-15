@@ -7,7 +7,7 @@ encargados de la transformación entre formatos de dominio y DTOs
 
 from eda.seedwork.dominio.repositorios import Mapeador
 from eda.seedwork.infraestructura.utils import unix_time_millis
-from eda.modulos.ordenes.dominio.objetos_valor import NombreAero, Odo, Leg, Segmento, Itinerario, CodigoIATA
+from eda.modulos.ordenes.dominio.objetos_valor import CodigoIATA
 from eda.modulos.ordenes.dominio.entidades import Orden
 from eda.modulos.ordenes.dominio.eventos.ordenes import OrdenAprobada, OrdenCancelada, OrdenAprobada, OrdenPagada, OrdenCreada, EventoOrden
 
@@ -15,7 +15,7 @@ from .dto import Orden as OrdenDTO
 from .excepciones import NoExisteImplementacionParaTipoFabricaExcepcion
 from pulsar.schema import *
 
-class MapadeadorEventosReserva(Mapeador):
+class MapadeadorEventosOrden(Mapeador):
 
     # Versiones aceptadas
     versions = ('v1',)

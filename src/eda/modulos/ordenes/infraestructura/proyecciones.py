@@ -10,7 +10,7 @@ import datetime
 import logging
 import traceback
 from abc import ABC, abstractmethod
-from .dto import ReservaAnalitica
+from .dto import OrdenAnalitica
 
 class ProyeccionOrden(Proyeccion, ABC):
     @abstractmethod
@@ -31,7 +31,7 @@ class ProyeccionOrdenesTotales(ProyeccionOrden):
             logging.error('ERROR: DB del app no puede ser nula')
             return
         # NOTE esta no usa repositorios y de una vez aplica los cambios. Es decir, no todo siempre debe ser un repositorio
-        record = db.session.query(ReservaAnalitica).filter_by(fecha_creacion=self.fecha_creacion.date()).one_or_none()
+        record = db.session.query(OrdenAnalitica).filter_by(fecha_creacion=self.fecha_creacion.date()).one_or_none()
 
         if record and self.operacion == self.ADD:
             record.total += 1
@@ -39,13 +39,13 @@ class ProyeccionOrdenesTotales(ProyeccionOrden):
             record.total -= 1 
             record.total = max(record.total, 0)
         else:
-            db.session.add(ReservaAnalitica(fecha_creacion=self.fecha_creacion.date(), total=1))
+            db.session.add(OrdenAnalitica(fecha_creacion=self.fecha_creacion.date(), total=1))
         
         db.session.commit()
 
 class ProyeccionOrdenesLista(ProyeccionOrden):
-    def __init__(self, id_reserva, id_cliente, estado, fecha_creacion, fecha_actualizacion):
-        self.id_reserva = id
+    def __init__(self, id_orden, id_cliente, estado, fecha_creacion, fecha_actualizacion):
+        self.id_orden = id
         self.id_cliente = id_cliente
         self.estado = estado
         self.fecha_creacion = millis_a_datetime(fecha_creacion)
@@ -62,7 +62,7 @@ class ProyeccionOrdenesLista(ProyeccionOrden):
         # TODO Haga los cambios necesarios para que se consideren los itinerarios, demás entidades y asociaciones
         repositorio.agregar(
             Orden(
-                id=str(self.id_reserva), 
+                id=str(self.id_orden), 
                 id_cliente=str(self.id_cliente), 
                 estado=str(self.estado), 
                 fecha_creacion=self.fecha_creacion, 
