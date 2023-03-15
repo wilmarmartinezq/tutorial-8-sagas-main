@@ -4,19 +4,9 @@ import "google/protobuf/timestamp.proto";
 
 option java_multiple_files = true;
 option java_package = "co.edu.uniandes.misw4406";
-option java_outer_classname = "VuelosProto";
 option objc_class_prefix = "VUE";
 
-package vuelos;
 
-// ------------------------------
-// Servicios
-// ------------------------------
-
-service Vuelos {
-  rpc CrearReserva (Reserva) returns (RespuestaReserva) {}
-  rpc ConsultarReserva (QueryReserva) returns (RespuestaReserva) {}
-}
 
 // ------------------------------
 // Entidades
@@ -48,18 +38,18 @@ message Itinerario {
     repeated Odo odos = 2;
 }
 
-message Reserva {
+message Orden {
     optional string id = 1;
     optional google.protobuf.Timestamp fecha_creacion = 2;
     optional google.protobuf.Timestamp fecha_actualizacion = 3;
     repeated Itinerario itinerarios = 4;
 }
 
-message QueryReserva {
+message QueryOrden {
     string id = 1;
 }
 
-message RespuestaReserva {
+message RespuestaOrden {
     string mensaje = 1;
-    optional Reserva reserva = 2;
+    optional Orden orden = 2;
 }

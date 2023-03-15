@@ -36,7 +36,7 @@ tasks = list()
 async def app_startup():
     global tasks
     task1 = asyncio.ensure_future(suscribirse_a_topico("evento-pago", "sub-pagos", EventoPago))
-    task2 = asyncio.ensure_future(suscribirse_a_topico("comando-pagar-orden", "sub-com-pagos-reservar", ComandoPagarOrden))
+    task2 = asyncio.ensure_future(suscribirse_a_topico("comando-pagar-orden", "sub-com-pagos-orden", ComandoPagarOrden))
     task3 = asyncio.ensure_future(suscribirse_a_topico("comando-revertir-pago", "sub-com-pagos-revertir", ComandoRevertirPago))
     tasks.append(task1)
     tasks.append(task2)
@@ -89,7 +89,7 @@ async def prueba_pago_revertido() -> dict[str, str]:
     return {"status": "ok"}
     
 @app.get("/prueba-pagar-orden", include_in_schema=False)
-async def prueba_pagar_reserva() -> dict[str, str]:
+async def prueba_pagar_orden() -> dict[str, str]:
     payload = PagarOrdenPayload(
         id_correlacion = "389822434",
         orden_id = "6463454",

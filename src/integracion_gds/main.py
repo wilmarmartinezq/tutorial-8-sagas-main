@@ -60,8 +60,8 @@ async def prueba_orden_confirmada() -> dict[str, str]:
     evento = EventoConfirmacionGDS(
         time=utils.time_millis(),
         ingestion=utils.time_millis(),
-        datacontenttype=ReservaConfirmada.__name__,
-        reserva_pagada = payload
+        datacontenttype=OrdenConfirmada.__name__,
+        orden_pagada = payload
     )
     despachador = Despachador()
     despachador.publicar_mensaje(evento, "evento-gds")
@@ -90,7 +90,7 @@ async def prueba_confirmacion_revertida() -> dict[str, str]:
 async def prueba_confirmar_orden() -> dict[str, str]:
     payload = ConfirmarOrdenPayload(
         id_correlacion = "389822434",
-        reserva_id = "6463454",
+        orden_id = "6463454",
     )
 
     comando = ComandoConfirmarOrden(
