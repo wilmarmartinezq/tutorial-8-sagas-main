@@ -22,19 +22,19 @@ def comenzar_consumidor(app):
     """
 
     import threading
-    import eda.modulos.adquisiciones.infraestructura.consumidores as hoteles
-    import eda.modulos.empaquetado.infraestructura.consumidores as vehiculos
-    import eda.modulos.ordenes.infraestructura.consumidores as vuelos
+    import eda.modulos.adquisiciones.infraestructura.consumidores as adquisiciones
+    import eda.modulos.empaquetado.infraestructura.consumidores as empaquetado
+    import eda.modulos.ordenes.infraestructura.consumidores as ordenes
 
     # Suscripción a eventos
-    threading.Thread(target=hoteles.suscribirse_a_eventos).start()
-    threading.Thread(target=vehiculos.suscribirse_a_eventos).start()
-    threading.Thread(target=vuelos.suscribirse_a_eventos, args=[app]).start()
+    threading.Thread(target=adquisiciones.suscribirse_a_eventos).start()
+    threading.Thread(target=empaquetado.suscribirse_a_eventos).start()
+    threading.Thread(target=ordenes.suscribirse_a_eventos, args=[app]).start()
 
     # Suscripción a comandos
-    threading.Thread(target=hoteles.suscribirse_a_comandos).start()
-    threading.Thread(target=vehiculos.suscribirse_a_comandos).start()
-    threading.Thread(target=vuelos.suscribirse_a_comandos, args=[app]).start()
+    threading.Thread(target=adquisiciones.suscribirse_a_comandos).start()
+    threading.Thread(target=empaquetado.suscribirse_a_comandos).start()
+    threading.Thread(target=ordenes.suscribirse_a_comandos, args=[app]).start()
 
 def create_app(configuracion={}):
     # Init la aplicacion de Flask
